@@ -16,7 +16,7 @@ export async function createUserAccount(user: INewUser) {
 
     const avatarURL = avatars.getInitials(user.name);
 
-    const newUser = await saveUserToDB({
+    await saveUserToDB({
       accountID: newAccount.$id,
       name: user.name,
       username: user.username,
@@ -39,7 +39,7 @@ export async function saveUserToDB(user: {
   imageURL: URL;
 }) {
   try {
-    const newUser = await databases.createDocument(
+    await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
       ID.unique(),
@@ -327,7 +327,7 @@ export async function deletePost(postId: string, imageID: string) {
 }
 
 export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
-  const queries: any[] = [Query.orderDesc("$updatedAt"), Query.limit(1)];
+  const queries: any[] = [Query.orderDesc("$updatedAt"), Query.limit(10)];
 
   if (pageParam) queries.push(Query.cursorAfter(pageParam.toString()));
 
