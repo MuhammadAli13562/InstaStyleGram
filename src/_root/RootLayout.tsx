@@ -1,7 +1,7 @@
 import BottomBar from "@/components/shared/BottomBar";
 import LeftSideBar from "@/components/shared/LeftSideBar";
 import { TopBar } from "@/components/shared/TopBar";
-import React from "react";
+import { Toaster } from "@/components/ui/toaster";
 import { Outlet } from "react-router-dom";
 
 const RootLayout = () => {
@@ -13,6 +13,7 @@ const RootLayout = () => {
         <Outlet />
       </section>
       <BottomBar />
+      <Toaster />
     </div>
   );
 };

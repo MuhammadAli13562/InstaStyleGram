@@ -13,6 +13,7 @@ import {
   Saved,
   UpdateProfile,
 } from "./_root/pages";
+import { Toaster } from "./components/ui/toaster";
 import "./globals.css";
 import { Routes, Route } from "react-router-dom";
 

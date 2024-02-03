@@ -16,18 +16,24 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
 import FileUploader from "../shared/FileUploader";
 import { Models } from "appwrite";
-import { useCreatePost } from "@/lib/react-query/queriesandMutations";
+import {
+  useCreatePost,
+  useEditPost,
+} from "@/lib/react-query/queriesandMutations";
 import { useUserContext } from "@/context/AuthContext";
 import { toast } from "../ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import { editPost } from "@/lib/appwrite/api";
 
 type PostFormProps = {
   post?: Models.Document;
+  action: "Create" | "Update";
 };
 
-const PostForm = ({ post }: PostFormProps) => {
-  const { mutateAsync: createPost, isPending: isLoadingCreate } =
-    useCreatePost();
+const PostForm = ({ post, action }: PostFormProps) => {
+  const { mutateAsync: createPost } = useCreatePost();
+  const { mutateAsync: editPost } = useEditPost();
+
   const { user } = useUserContext();
   const navigate = useNavigate();
 
@@ -53,16 +59,29 @@ const PostForm = ({ post }: PostFormProps) => {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const newPost = await createPost({
-      ...values,
-      userId: user.id,
-    });
+    if (post && action === "Update") {
+      const updatedPost = await editPost({
+        ...values,
+        postId: post.$id,
+        imageID: post.imageID,
+        imageURL: post.imageURL,
+      });
+      if (!updatedPost) toast({ title: "Post not updated! Please try again." });
+      else navigate("/");
+    } else {
+      const newPost = await createPost({
+        ...values,
+        userId: user.id,
+      });
+      if (!newPost) toast({ title: "Post not created! Please try again." });
+      else navigate("/");
+    }
 
-    if (!newPost) toast({ title: "Post not created! Please try again." });
-
-    navigate("/");
     console.log(values);
   }
+
+  console.log("post form : ", post?.imageURL);
+
   return (
     <Form {...form}>
       <form
@@ -140,14 +159,18 @@ const PostForm = ({ post }: PostFormProps) => {
           )}
         />
         <div className="flex gap-4 items-center justify-end">
-          <Button type="button" className="shad-button_dark_4">
+          <Button
+            onClick={() => navigate("/")}
+            type="button"
+            className="shad-button_dark_4"
+          >
             Cancel
           </Button>
           <Button
             type="submit"
             className="shad-button_primary whitespace-nowrap"
           >
-            Submit
+            {action === "Update" ? "Update" : "Create"}
           </Button>
         </div>
       </form>
