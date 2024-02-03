@@ -24,7 +24,7 @@ const SigninForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const { mutateAsync: signInAccount, isPending: isSigningIn } =
+  const { mutateAsync: signInAccount, isLoading: isSigningIn } =
     useSignInAccount();
 
   const { checkAuthUser } = useUserContext();

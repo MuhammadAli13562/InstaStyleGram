@@ -23,7 +23,6 @@ import {
 import { useUserContext } from "@/context/AuthContext";
 import { toast } from "../ui/use-toast";
 import { useNavigate } from "react-router-dom";
-import { editPost } from "@/lib/appwrite/api";
 
 type PostFormProps = {
   post?: Models.Document;

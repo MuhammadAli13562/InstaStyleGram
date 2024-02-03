@@ -12,9 +12,9 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 const PostDetail = () => {
   const { id } = useParams();
-  const { data: post, isPending: isLoadingPost } = useGetPostbyId(id || "");
+  const { data: post, isLoading: isLoadingPost } = useGetPostbyId(id || "");
   const { data: user } = useGetCurrentUser();
-  const { mutateAsync: deletePost, isPending: isDeletingPost } =
+  const { mutateAsync: deletePost, isLoading: isDeletingPost } =
     useDeletePost();
 
   //  console.log("postdetails:", post?.creator.imageURL);

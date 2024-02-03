@@ -4,11 +4,7 @@ import { useGetRecentPosts } from "@/lib/react-query/queriesandMutations";
 import { Models } from "appwrite";
 
 const Home = () => {
-  const {
-    data: posts,
-    isPending: isPostLoading,
-    isError: isErrorPosts,
-  } = useGetRecentPosts();
+  const { data: posts, isLoading: isPostLoading } = useGetRecentPosts();
 
   if (!isPostLoading) console.log("incoming data from posts :", posts);
 
