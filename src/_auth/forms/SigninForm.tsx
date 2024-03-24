@@ -24,8 +24,7 @@ const SigninForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const { mutateAsync: signInAccount, isLoading: isSigningIn } =
-    useSignInAccount();
+  const { mutateAsync: signInAccount, isLoading: isSigningIn } = useSignInAccount();
 
   const { checkAuthUser } = useUserContext();
 
@@ -57,7 +56,7 @@ const SigninForm = () => {
   return (
     <Form {...form}>
       <div className="sm:w-420 flex-center flex-col">
-        <img src="/assets/images/logo.svg" />
+        <img src="/assets/images/logo.png" />
         <h2 className="font-bold my-2 mb-6">Log In to your Account</h2>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -111,10 +110,7 @@ const SigninForm = () => {
           </Button>
           <p className="text-small-regular text-light-2 text-center mt-2">
             Don't have an account ?
-            <Link
-              to="/sign-up"
-              className="text-primary-500 text-small-semibold ml-1"
-            >
+            <Link to="/sign-up" className="text-primary-500 text-small-semibold ml-1">
               Sign up
             </Link>
           </p>

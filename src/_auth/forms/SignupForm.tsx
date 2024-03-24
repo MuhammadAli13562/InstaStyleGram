@@ -17,18 +17,14 @@ import { SignupValidation } from "@/lib/validation";
 import { Loader } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  useCreateUserAccount,
-  useSignInAccount,
-} from "@/lib/react-query/queriesandMutations";
+import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesandMutations";
 import { useUserContext } from "@/context/AuthContext";
 
 const SignupForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const { mutateAsync: createUserAccount, isLoading: isCreatingUser } =
-    useCreateUserAccount();
+  const { mutateAsync: createUserAccount, isLoading: isCreatingUser } = useCreateUserAccount();
 
   const { mutateAsync: signInAccount } = useSignInAccount();
 
@@ -73,7 +69,7 @@ const SignupForm = () => {
   return (
     <Form {...form}>
       <div className="sm:w-420 flex-center flex-col">
-        <img src="/assets/images/logo.svg" />
+        <img src="/assets/images/logo.png" />
         <h2 className="font-bold my-2">Create a new Account</h2>
         <p className="text-light-3 small-medium md:base-regular mb-2">
           To use InstaStyleGram enter your details
@@ -90,11 +86,7 @@ const SignupForm = () => {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input
-                    className="shad-input  "
-                    placeholder="John Doe"
-                    {...field}
-                  />
+                  <Input className="shad-input  " placeholder="John Doe" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -166,10 +158,7 @@ const SignupForm = () => {
           </Button>
           <p className="text-small-regular text-light-2 text-center mt-2">
             Already have an account ?
-            <Link
-              to="/sign-in"
-              className="text-primary-500 text-small-semibold ml-1"
-            >
+            <Link to="/sign-in" className="text-primary-500 text-small-semibold ml-1">
               Sign in
             </Link>
           </p>
