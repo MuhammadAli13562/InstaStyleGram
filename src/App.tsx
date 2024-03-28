@@ -1,3 +1,4 @@
+import { ToastContainer } from "react-toastify";
 import AuthLayout from "./_auth/AuthLayout";
 import SigninForm from "./_auth/forms/SigninForm";
 import SignupForm from "./_auth/forms/SignupForm";
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="/update-profile/:id" element={<UpdateProfile />} />
         </Route>
       </Routes>
+      <ToastContainer autoClose={1000} />
     </main>
   );
 };

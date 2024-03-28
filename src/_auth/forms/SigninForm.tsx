@@ -14,19 +14,24 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { SigninValidation } from "@/lib/validation";
-import { Loader } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
 import { useSignInAccount } from "@/lib/react-query/queriesandMutations";
 import { useUserContext } from "@/context/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
 
 const SigninForm = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
 
-  const { mutateAsync: signInAccount, isLoading: isSigningIn } = useSignInAccount();
-
+  const {
+    mutateAsync: signInAccount,
+    isSuccess: isSignedIn,
+    isLoading: isSigningIn,
+    isError: isSignInError,
+  } = useSignInAccount();
   const { checkAuthUser } = useUserContext();
+  const toastId = "SigningInToast";
 
   const form = useForm<z.infer<typeof SigninValidation>>({
     resolver: zodResolver(SigninValidation),
@@ -36,21 +41,34 @@ const SigninForm = () => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof SigninValidation>) {
-    const session = await signInAccount({
-      email: values.email,
-      password: values.password,
-    });
+  useEffect(() => {
+    if (isSigningIn) toast.loading("Signing In", { toastId });
+    if (isSignedIn)
+      toast.update(toastId, { render: "Sign In Successful", type: "success", isLoading: false });
+    if (isSignInError)
+      toast.update(toastId, { render: "Sign In Error", type: "error", isLoading: false });
+  }, [isSigningIn, isSignedIn, isSignInError]);
 
-    if (!session)
-      return toast({
-        title: "Sign in failed . Please try again",
-      });
+  async function onSubmit(values: z.infer<typeof SigninValidation>) {
+    const session = await toast.promise(
+      signInAccount({
+        email: values.email,
+        password: values.password,
+      }),
+      {
+        pending: "Signing In",
+      },
+      {
+        toastId,
+      }
+    );
+    if (!session) return;
 
     const isLoggedIn = await checkAuthUser();
 
-    if (isLoggedIn) navigate("/");
-    else toast({ title: "User not logged In. Try Again" });
+    if (isLoggedIn) {
+      navigate("/");
+    } else toast.error("User not logged In ! Try Again");
   }
 
   return (
@@ -98,15 +116,8 @@ const SigninForm = () => {
               </FormItem>
             )}
           />
-          <Button className="shad-button_primary w-full" type="submit">
-            {isSigningIn ? (
-              <div className="flex-center gap-2">
-                Loading
-                <Loader />
-              </div>
-            ) : (
-              <div>Sign In</div>
-            )}
+          <Button disabled={isSigningIn} className="shad-button_primary w-full" type="submit">
+            Sign In
           </Button>
           <p className="text-small-regular text-light-2 text-center mt-2">
             Don't have an account ?

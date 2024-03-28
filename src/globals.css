@@ -10,7 +10,7 @@
   }
 
   body {
-    @apply bg-dark-1 text-white min-h-screen font-inter;
+    @apply bg-black text-white min-h-screen font-inter;
   }
 }
 
@@ -90,22 +90,22 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar {
-    width: 3px;
+    width: 10px;
     height: 3px;
-    border-radius: 2px;
+    border-radius: 5px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #09090a;
+    background: black;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #5c5c7b;
+    background: #96757b;
     border-radius: 50px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #7878a3;
+    background: #a07f85;
   }
 
   .common-container {
@@ -157,7 +157,7 @@
   }
 
   .post_details-img {
-    @apply h-80 lg:h-[480px] xl:w-[48%] rounded-t-[30px] xl:rounded-l-[24px] xl:rounded-tr-none object-cover p-5 bg-dark-1;
+    @apply h-80 lg:h-[400px] xl:w-[48%] rounded-t-[30px] xl:rounded-l-[24px] xl:rounded-tr-none object-cover p-5 bg-dark-1;
   }
 
   .post_details-info {
@@ -219,7 +219,7 @@
 
   /* Left sidebar */
   .leftsidebar {
-    @apply hidden md:flex px-6 py-10 flex-col justify-between min-w-[270px] bg-dark-2;
+    @apply hidden md:flex px-6 py-10 flex-col justify-between min-w-[270px] bg-[#141413];
   }
 
   .leftsidebar-link {
@@ -262,7 +262,7 @@
   }
 
   .shad-textarea {
-    @apply h-36 bg-dark-3 rounded-xl border-none focus-visible:ring-1 focus-visible:ring-offset-1 ring-offset-light-3 !important;
+    @apply h-36 bg-dark-3 rounded-xl border-none focus-visible:ring-1 focus-visible:ring-offset-1 ring-offset-light-3  !important;
   }
 
   /* Button */

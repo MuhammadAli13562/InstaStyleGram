@@ -5,17 +5,33 @@ import { useUserContext } from "@/context/AuthContext";
 import { sidebarLinks } from "@/constants";
 import { INavLink } from "@/types";
 import { Button } from "../ui/button";
+import LoaderProfile from "../loaders/LoaderProfile";
+import { toast } from "react-toastify";
 
 export const LeftSideBar = () => {
-  const { mutate: signOutAccount, isSuccess: isSignedOut } = useSignOutAccount();
+  const {
+    mutate: signOutAccount,
+    isLoading: isSigningOut,
+    isSuccess: isSignedOut,
+  } = useSignOutAccount();
 
-  const { user } = useUserContext();
+  const { user, isLoading } = useUserContext();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const toastId = 1;
 
   useEffect(() => {
-    if (isSignedOut) navigate(0);
-  }, [isSignedOut]);
+    if (isSignedOut) {
+      toast.update(toastId, { render: "All is good", type: "success", isLoading: false });
+      navigate(0);
+    }
+
+    if (isSigningOut) toast.loading("Signing Out User", { toastId });
+  }, [isSignedOut, isSigningOut]);
+
+  const handleSignOut = async () => {
+    signOutAccount();
+  };
 
   return (
     <div className="leftsidebar">
@@ -23,13 +39,18 @@ export const LeftSideBar = () => {
         <Link to="/" className="flex gap-3 items-center">
           <img src="/assets/images/logo.png" alt="logo" width={300} />
         </Link>
-        <Link className="flex gap-2" to={`/profile/${user.id}`}>
-          <img className="w-10 h-10 rounded-full" src={user.imageURL} />
-          <div className="flex flex-col">
-            <span className="text-white text-md font-bold ">{user.name}</span>
-            <span className="text-sm">{user.username}</span>
-          </div>
-        </Link>
+        {/* Profile  */}
+        {isLoading ? (
+          <LoaderProfile />
+        ) : (
+          <Link className="flex gap-2" to={`/profile/${user.id}`}>
+            <img className="w-10 h-10 rounded-full" src={user.imageURL} />
+            <div className="flex flex-col">
+              <span className="text-white text-md font-bold ">{user.name}</span>
+              <span className="text-sm">{user.username}</span>
+            </div>
+          </Link>
+        )}
         <ul>
           {sidebarLinks.map((link: INavLink) => {
             const isLinkActive = link.route === pathname;
@@ -50,7 +71,12 @@ export const LeftSideBar = () => {
           })}
         </ul>
       </div>
-      <Button variant="ghost" className="shad-button_ghost" onClick={() => signOutAccount()}>
+      <Button
+        disabled={isSigningOut}
+        variant="ghost"
+        className="shad-button_ghost"
+        onClick={handleSignOut}
+      >
         <img src="/assets/icons/logout.svg" />
         <span className="small-medium lg:base-medium">Logout</span>
       </Button>

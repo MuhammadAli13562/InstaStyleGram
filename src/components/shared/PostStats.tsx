@@ -8,6 +8,7 @@ import { checkIsLiked } from "@/lib/utils";
 import { Models } from "appwrite";
 import { Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import LoaderStats from "../loaders/LoaderStats";
 
 type PostStatsProps = {
   post?: Models.Document;
@@ -23,8 +24,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
 
   const { mutate: likePost } = useLikePost();
   const { mutate: savePost, isLoading: isSavingPost } = useSavePost();
-  const { mutate: deleteSavedPost, isLoading: isDeletingSaved } =
-    useDeleteSavedPost();
+  const { mutate: deleteSavedPost, isLoading: isDeletingSaved } = useDeleteSavedPost();
 
   const savedPostRecord = currentUser?.save.find(
     (record: Models.Document) => record.post.$id === post?.$id
@@ -61,15 +61,11 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
   return (
     <div className="flex mt-6 justify-between items-center z-20">
       {isLoadingUser ? (
-        <Loader />
+        <LoaderStats />
       ) : (
         <div className="flex gap-2 mr-5">
           <img
-            src={
-              checkIsLiked(likes, userId)
-                ? "/assets/icons/liked.svg"
-                : "/assets/icons/like.svg"
-            }
+            src={checkIsLiked(likes, userId) ? "/assets/icons/liked.svg" : "/assets/icons/like.svg"}
             alt="like"
             width={20}
             height={20}
@@ -81,7 +77,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
       )}
       <div className="flex gap-2">
         {isSavingPost || isDeletingSaved || isLoadingUser ? (
-          <Loader />
+          <LoaderStats />
         ) : (
           <img
             src={isSaved ? "/assets/icons/saved.svg" : "/assets/icons/save.svg"}

@@ -1,7 +1,8 @@
-import Loader from "@/components/shared/Loader";
+import LoaderHomeFeed from "@/components/loaders/LoaderHomeFeed";
 import PostCard from "@/components/shared/PostCard";
 import { useGetRecentPosts } from "@/lib/react-query/queriesandMutations";
 import { Models } from "appwrite";
+import "react-toastify/dist/ReactToastify.css";
 
 const Home = () => {
   const { data: posts, isLoading: isPostLoading } = useGetRecentPosts();
@@ -14,7 +15,7 @@ const Home = () => {
         <div className="home-posts">
           <h2 className="h3-bold md:h2-bold text-left w-full">Home Feed</h2>
           {isPostLoading && !posts ? (
-            <Loader />
+            <LoaderHomeFeed />
           ) : (
             <ul className="flex flex-col flex-1 gap-9 w-full">
               {posts?.documents.map((post: Models.Document) => (

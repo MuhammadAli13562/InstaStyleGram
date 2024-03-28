@@ -1,3 +1,4 @@
+import LoaderPostDetails from "@/components/loaders/LoaderPostDetails";
 import PostStats from "@/components/shared/PostStats";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
@@ -7,15 +8,13 @@ import {
   useGetPostbyId,
 } from "@/lib/react-query/queriesandMutations";
 import { formatDate } from "@/lib/utils";
-import { Loader } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const PostDetail = () => {
   const { id } = useParams();
   const { data: post, isLoading: isLoadingPost } = useGetPostbyId(id || "");
   const { data: user } = useGetCurrentUser();
-  const { mutateAsync: deletePost, isLoading: isDeletingPost } =
-    useDeletePost();
+  const { mutateAsync: deletePost, isLoading: isDeletingPost } = useDeletePost();
 
   //  console.log("postdetails:", post?.creator.imageURL);
 
@@ -34,36 +33,25 @@ const PostDetail = () => {
   return (
     <div className="post_details-container">
       {isLoadingPost ? (
-        <Loader />
+        <LoaderPostDetails />
       ) : (
         <div className="post_details-card">
           <img src={post?.imageURL} className="post_details-img" />
           <div className="post_details-info">
             <div className="flex-between w-full">
-              <Link
-                to={`/profile/${post?.creator.$id}`}
-                className="flex items-center gap-3"
-              >
+              <Link to={`/profile/${post?.creator.$id}`} className="flex items-center gap-3">
                 <img
-                  src={
-                    post?.creator.imageURL ||
-                    "assets/icons/profile-placeholder.svg"
-                  }
+                  src={post?.creator.imageURL || "assets/icons/profile-placeholder.svg"}
                   alt="creator"
                   className="rounded-full w-10 lg:w-12 "
                 />
                 <div className="flex flex-col">
-                  <p className="small-medium lg:body-bold text-light-1">
-                    {post?.creator.name}
-                  </p>
+                  <p className="small-medium lg:body-bold text-light-1">{post?.creator.name}</p>
                   <div className="flex-center gap-2 text-light-3">
                     <p className="subtle-semibold lg:small-regular">
                       {formatDate(post?.$createdAt || "")}
                     </p>
-                    -
-                    <p className="subtle-semibold lg:small-regular">
-                      {post?.location}
-                    </p>
+                    -<p className="subtle-semibold lg:small-regular">{post?.location}</p>
                   </div>
                 </div>
               </Link>
@@ -74,18 +62,10 @@ const PostDetail = () => {
                 ) : (
                   <div className="flex-center gap-4">
                     <Link to={`/update-post/${post?.$id}`}>
-                      <img
-                        src="/assets/icons/edit.svg"
-                        height={24}
-                        width={24}
-                      />
+                      <img src="/assets/icons/edit.svg" height={24} width={24} />
                     </Link>
                     <Button className="" onClick={onDelete}>
-                      <img
-                        src="/assets/icons/delete.svg"
-                        height={24}
-                        width={24}
-                      />
+                      <img src="/assets/icons/delete.svg" height={24} width={24} />
                     </Button>
                   </div>
                 )
